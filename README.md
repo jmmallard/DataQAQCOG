@@ -1,2 +1,2 @@
 # AssimQAQC
-MATLAB files for assimilating and QAQCing field data from Calhoun
+MATLAB files for assimilating and QAQCing field hydrologic data from Calhoun
