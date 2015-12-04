@@ -7,7 +7,7 @@ close all
 % load('CalhounData.mat')
 
 %Inputs
-filename = '100615_C1T1W0_48.CSV';
+filename = '030215_C1T1W0_48.CSV';
 loc = 'C1T1W0_48';
 
 %Check if input location exists in CalhounData, if not add it
@@ -15,10 +15,14 @@ if isempty(structfind(CalhounData,'name',loc));
     CalhounData(length(CalhounData)+1).name = 'loc';
 end
 
-%Read file(s) and assimilate raw data
+%Read file(s) and assimilate raw data if not already assimilated. If
+%assimilated, stop execution and print error message
 importedData = readtable(filename,'FileType','text');
 dlDate = datestr(datenum(filename(1:6),'mmddyy'),'mmmddyy'); %convert date so it starts with a letter
 locI = structfind(CalhounData,'name',loc); %find correct index in CalhounData to match input file
+if sum(strcmp(dlDate,fieldnames(CalhounData(locI).raw))) > 0 
+    error('Error. \nData downloaded on %s has already been assimilated',dlDate)
+end
 CalhounData(locI).raw.(dlDate) = importedData; %write raw data as table to variable named for date downloaded
 
 %Convert imported data to numeric arrays with variable names following
