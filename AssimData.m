@@ -64,7 +64,12 @@ close all
 %Concatenate imported variables with existing CalhounData.data table
     %First check to only incorporate any non-intersecting data
 tempTable = table(datetime,level,watertemp,loggertemp);
-[UniqueData, iInput] = setdiff(tempTable,CalhounData.data);
+[UniqueData, iInput] = setdiff(tempTable,CalhounData.data); %Find Unique Data
+[OverlapData, ~, ~] = intersect(tempTable,CalhounData.data); %Find overlapping data and print max range to screen
+dateOne = datestr(OverlapData.datetime(1));
+dateEnd = datestr(OverlapData.datetime(end))
+['Overlapping data range contained within ',datestr(OverlapData.datetime(1)),' and ',datestr(OverlapData.datetime(end))] %#ok<NOPTS>
+
 if ~isempty(UniqueData) %Only add data if there is unique data to add
     CalhounData(locI).data = vertcat(CalhounData(locI).data,tempTable(iInput,:));
 end
