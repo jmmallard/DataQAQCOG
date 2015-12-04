@@ -7,8 +7,8 @@ close all
 % load('CalhounData.mat')
 
 %Inputs
-filename = '030215_C1T1W0_48.CSV';
-loc = 'C1T1W0_48';
+filename = '100615_C1T2W0_55.CSV';
+loc = 'C1T2W0_55';
 
 %Check if input location exists in CalhounData, if not add it
 if isempty(structfind(CalhounData,'name',loc));
