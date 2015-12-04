@@ -7,7 +7,7 @@ close all
 % load('CalhounData.mat')
 
 %Inputs
-filename = '100615_C1T1W0_48.csv';
+filename = '100615_C1T1W0_48.CSV';
 loc = 'C1T1W0_48';
 
 %Check if input location exists in CalhounData, if not add it
@@ -16,7 +16,7 @@ if isempty(structfind(CalhounData,'name',loc));
 end
 
 %Read file(s) and assimilate raw data
-importedData = readtable(filename);
+importedData = readtable(filename,'FileType','text');
 dlDate = datestr(datenum(filename(1:6),'mmddyy'),'mmmddyy'); %convert date so it starts with a letter
 locI = structfind(CalhounData,'name',loc); %find correct index in CalhounData to match input file
 CalhounData(locI).raw.(dlDate) = importedData; %write raw data as table to variable named for date downloaded
@@ -67,8 +67,8 @@ tempTable = table(datetime,level,watertemp,loggertemp);
 [UniqueData, iInput] = setdiff(tempTable,CalhounData.data); %Find Unique Data
 [OverlapData, ~, ~] = intersect(tempTable,CalhounData.data); %Find overlapping data and print max range to screen
 dateOne = datestr(OverlapData.datetime(1));
-dateEnd = datestr(OverlapData.datetime(end))
-['Overlapping data range contained within ',datestr(OverlapData.datetime(1)),' and ',datestr(OverlapData.datetime(end))] %#ok<NOPTS>
+dateEnd = datestr(OverlapData.datetime(end));
+disp(['Overlapping data range contained within ',dateOne,' and ',dateEnd]) 
 
 if ~isempty(UniqueData) %Only add data if there is unique data to add
     CalhounData(locI).data = vertcat(CalhounData(locI).data,tempTable(iInput,:));
