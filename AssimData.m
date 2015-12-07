@@ -16,8 +16,9 @@ if isempty(structfind(CalhounData,'name',loc));
     newI = length(CalhounData)+1;
     CalhounData(newI).name = loc;
     CalhounData(newI).raw = struct();
-    CalhounData(newI).meta = input('Enter metadata as cell array of strings: \n')
-    CalhounData(newI).headers = CalhounData(1).header;
+    CalhounData(newI).meta = input('Enter metadata as cell array of strings: \n');
+    CalhounData(newI).headers = CalhounData(1).headers;
+    CalhounData(newI).data = cell2table(cell(0,4),'VariableNames',{'datetime','level','watertemp','loggertemp'});
 end
 
 %Read file(s) and assimilate raw data if not already assimilated. If
@@ -42,7 +43,7 @@ levelInput = input('# Input variable -> level? enter 0 if none: ');
 if levelInput == 0
     level = repmat(-9999,length(dates),1);
 else
-    level = importedData{:,levelInput}; 
+    level = importedData{:,levelInput};
 end
 
 importedData.Properties.VariableNames 
@@ -73,11 +74,14 @@ close all
 %Concatenate imported variables with existing CalhounData.data table
     %First check to only incorporate any non-intersecting data
 tempTable = table(datetime,level,watertemp,loggertemp);
-[UniqueData, iInput] = setdiff(tempTable,CalhounData.data); %Find Unique Data
-[OverlapData, ~, ~] = intersect(tempTable,CalhounData.data); %Find overlapping data and print max range to screen
-dateOne = datestr(OverlapData.datetime(1));
-dateEnd = datestr(OverlapData.datetime(end));
-disp(['Overlapping data range contained within ',dateOne,' and ',dateEnd]) 
+[UniqueData, iInput] = setdiff(tempTable,CalhounData(locI).data); %Find Unique Data
+
+[OverlapData, ~, ~] = intersect(tempTable,CalhounData(locI).data); %Find overlapping data and print max range to screen
+if ~isempty(OverlapData) 
+    dateOne = datestr(OverlapData.datetime(1));
+    dateEnd = datestr(OverlapData.datetime(end));
+    disp(['Overlapping data range contained within ',dateOne,' and ',dateEnd])
+end
 
 if ~isempty(UniqueData) %Only add data if there is unique data to add
     CalhounData(locI).data = vertcat(CalhounData(locI).data,tempTable(iInput,:));
