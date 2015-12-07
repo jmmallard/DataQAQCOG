@@ -10,9 +10,12 @@ close all
 filename = '100615_C1T2W0_55.CSV';
 loc = 'C1T2W0_55';
 
-%Check if input location exists in CalhounData, if not add it
+%Check if input location exists in CalhounData, if not add it and metadata
 if isempty(structfind(CalhounData,'name',loc));
-    CalhounData(length(CalhounData)+1).name = 'loc';
+    newI = length(CalhounData)+1;
+    CalhounData(newI).name = loc;
+    CalhounData(newI).raw = struct();
+    
 end
 
 %Read file(s) and assimilate raw data if not already assimilated. If
