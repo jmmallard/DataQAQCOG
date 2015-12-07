@@ -10,12 +10,14 @@ close all
 filename = '100615_C1T2W0_55.CSV';
 loc = 'C1T2W0_55';
 
-%Check if input location exists in CalhounData, if not add it and metadata
+%Check if input location exists in CalhounData, if not add it, metadata,
+%and headers (note that headers is currently just applicabple to wells)
 if isempty(structfind(CalhounData,'name',loc));
     newI = length(CalhounData)+1;
     CalhounData(newI).name = loc;
     CalhounData(newI).raw = struct();
-    
+    CalhounData(newI).meta = input('Enter metadata as cell array of strings: \n')
+    CalhounData(newI).headers = CalhounData(1).header;
 end
 
 %Read file(s) and assimilate raw data if not already assimilated. If
@@ -63,7 +65,7 @@ end
 %Plot imported data for visual check
 plot(datetime,level)
 title(['Imported Data DL on: ', dlDate])
-ylabel(['Water Level (', CalhounData(locI).data.Properties.VariableUnits{2},')'])
+ylabel('Water Level')
 datetick('x')
 k = waitforbuttonpress; %Pause to check imported data
 close all
