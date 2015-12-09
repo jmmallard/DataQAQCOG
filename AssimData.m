@@ -10,6 +10,7 @@ close all
 filename = '100615_C1T2W0_55.CSV';
 loc = 'C1T2W0_55';
 
+
 %Check if input location exists in CalhounData, if not add it, metadata,
 %and headers (note that headers is currently just applicabple to wells)
 if isempty(structfind(CalhounData,'name',loc));
@@ -88,7 +89,7 @@ if ~isempty(UniqueData) %Only add data if there is unique data to add
 end
 
 %Plot overall data
-plot(CalhounData.data.datetime,CalhounData.data.level)
+plot(CalhounData(locI).data.datetime,CalhounData(locI).data.level)
 title(['Data for ', loc])
-ylabel(['Water Level (', CalhounData(locI).data.Properties.VariableUnits{2},')'])
+ylabel(['Water Level'])
 datetick('x')
