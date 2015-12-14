@@ -7,9 +7,10 @@ close all
 % load('CalhounData.mat')
 
 %Inputs
-filename = '100615_C1T2W0_55.CSV';
-loc = 'C1T2W0_55';
-
+filename = '120815_C1T1W0X48.CSV';
+loc = 'C1T1W0_48';
+dataType = ''; %ie - well, EC, etc
+fileType = ''; %ie - 
 
 %Check if input location exists in CalhounData, if not add it, metadata,
 %and headers (note that headers is currently just applicabple to wells)
